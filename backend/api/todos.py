@@ -8,45 +8,49 @@ from schemas import todo as schemas_todo
 router = APIRouter()
 
 
-@router.get("/", response_model=list[schemas_todo.TodoFull])
+@router.get("/", response_model=list[schemas_todo.TodoInDB])
 def get_all_todos(
-    db: Session = Depends(deps.get_db)
+    db: Session = Depends(deps.get_db),
+    current_user = Depends(deps.get_current_user)
 ):
-    todos = crud_todo.get_all(db)
+    todos = crud_todo.get_all_by_user_id(db=db, user_id=current_user.id)
     return todos
 
 
-@router.post("/", response_model=schemas_todo.TodoFull)
+@router.post("/", response_model=schemas_todo.TodoInDB)
 def create_todo(
-    todo_params: schemas_todo.TodoBase,
-    db: Session = Depends(deps.get_db)
+    todo_params: schemas_todo.TodoCreate,
+    db: Session = Depends(deps.get_db),
+    current_user = Depends(deps.get_current_user)
 ):
-    todo = crud_todo.create(db, todo_params)
+    todo = crud_todo.create(db=db, user_id=current_user.id, todo_params=todo_params)
     return todo
 
 
-@router.put("/{todo_id}")
+@router.put("/{todo_id}", response_model=schemas_todo.TodoInDB)
 def update_todo(
     todo_id: int,
-    todo_params: schemas_todo.TodoBase,
-    db: Session = Depends(deps.get_db)
+    todo_params: schemas_todo.TodoCreate,
+    db: Session = Depends(deps.get_db),
+    current_user = Depends(deps.get_current_user)
 ):
-    todo = crud_todo.get_by_id(db=db, id=todo_id)
+    todo = crud_todo.get_by_id_with_user_id(db=db, id=todo_id, user_id=current_user.id)
 
     if not todo:
         raise HTTPException(status_code=404, detail="Todo not found")
 
-    todo = crud_todo.update(db, todo_id, todo_params)
+    todo = crud_todo.update(db=db, id=todo_id, user_id=current_user.id, todo_params=todo_params)
     return todo
 
 
-@router.delete("/{todo_id}")
+@router.delete("/{todo_id}", response_model=schemas_todo.TodoInDB)
 def delete_todo(
     todo_id: int,
     db: Session = Depends(deps.get_db),
+    current_user = Depends(deps.get_current_user)
 ):
 
-    todo = crud_todo.get_by_id(db=db, id=todo_id)
+    todo = crud_todo.get_by_id_with_user_id(db=db, id=todo_id, user_id=current_user.id)
 
     if not todo:
         raise HTTPException(status_code=404, detail="Todo not found")
