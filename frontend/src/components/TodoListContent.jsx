@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Delete_button from "./delete_list";
+import ChangeButtom from "./ChangeButtom";
 
 const TodoListContent = () => {
   const [todos, setTodos] = useState([]);
@@ -18,6 +19,7 @@ const TodoListContent = () => {
         <div>
           <p>Content: {todo.content}</p>
           <Delete_button id={todo.id} />
+          <ChangeButtom id={todo.id} />
         </div>
       ))}
     </div>
