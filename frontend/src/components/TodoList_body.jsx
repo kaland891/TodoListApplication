@@ -1,16 +1,17 @@
-import TodoList_content from "./todolist_content";
+import TodoListContent from "./TodoListContent";
+import AddNewTodoList from "./AddNewTodoList";
 
-const TodoList_body = () => {
+const TodoListBody = () => {
   return (
     <div>
-      <h1>Vite + React</h1>
       <div className="card"></div>
       <div className="todoList-body">
         <h1>todoList</h1>
-        {TodoList_content()}
+        <AddNewTodoList />
+        <TodoListContent />
       </div>
     </div>
   );
 };
 
-export default TodoList_body;
+export default TodoListBody;
