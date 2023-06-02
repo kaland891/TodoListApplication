@@ -26,10 +26,6 @@ const ToDoList = () => {
   }, [todoList]);
 
   useEffect(() => {
-    // const localTodoList = JSON.parse(localStorage.getItem("todoList"));
-    // if (localTodoList) {
-    //   dispatch(setTodoList(localTodoList));
-    // }
     fetchData();
   }, []);
 
