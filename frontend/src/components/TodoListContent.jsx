@@ -26,4 +26,18 @@ const TodoListContent = () => {
   );
 };
 
+const TodoListContentBody = (props) => {
+  return (
+    <div className="todoList-body">
+      {todos.map((todo) => (
+        <div>
+          <p>Content: {todo.content}</p>
+          <Delete_button id={todo.id} />
+          <ChangeButtom id={todo.id} />
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default TodoListContent;

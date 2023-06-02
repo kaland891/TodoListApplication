@@ -7,6 +7,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<TodoList_body />} />
+        <Route path="/login" element={<TodoList_body />} />
       </Routes>
     </Router>
   );
