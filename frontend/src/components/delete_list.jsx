@@ -2,7 +2,10 @@ import TodoListContent from "./TodoListContent";
 
 const Delete_button = (todolist) => {
   return (
-    <button className="delete_button" onClick={() => delcontent(todolist.id)}>
+    <button
+      className="py-1 px-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+      onClick={() => delcontent(todolist.id)}
+    >
       Delete
     </button>
   );

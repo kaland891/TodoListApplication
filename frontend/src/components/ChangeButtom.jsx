@@ -29,17 +29,17 @@ const ChangeButtom = (props) => {
   };
 
   return (
-    <div className="u-flex">
+    <div className="flex items-center justify-center">
       <input
         type="text"
         placeholder={props.defaultText}
         value={value}
         onChange={handleChange}
-        className="NewtodoInput"
+        className="border border-gray-300 p-1 rounded-lg mr-2"
       />
       <button
         type="change"
-        className="NewtodoInput-button u-pointer"
+        className="mr-2 py-1 px-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
         value="change"
         onClick={handleSubmit}
       >

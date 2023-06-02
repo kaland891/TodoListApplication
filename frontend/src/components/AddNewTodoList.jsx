@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import "./tailwind.css";
 
 const NewtodoInput = (props) => {
   const [value, setValue] = useState("");
@@ -14,23 +15,24 @@ const NewtodoInput = (props) => {
   };
 
   return (
-    <div className="u-flex">
+    <form
+      onSubmit={handleSubmit}
+      className="flex justify-between items-center mb-6"
+    >
       <input
         type="text"
         placeholder={props.defaultText}
         value={value}
         onChange={handleChange}
-        className="NewtodoInput"
+        className="flex-1 px-4 py-2 mr-3 border rounded-md w-40"
       />
       <button
         type="submit"
-        className="NewtodoInput-button u-pointer"
-        value="Submit"
-        onClick={handleSubmit}
+        className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700"
       >
-        Submit
+        提交
       </button>
-    </div>
+    </form>
   );
 };
 
