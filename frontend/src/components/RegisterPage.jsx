@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "../index.css";
 import { useNavigate } from "react-router-dom";
-import { setUsername, setEmail } from "../UserSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
-  const username = useSelector((state) => state.auth.UserName);
-  const email = useSelector((state) => state.auth.email);
+
+  const [username, setUsername] = useState("");
+
+  const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
 
@@ -49,28 +50,28 @@ const RegisterPage = () => {
         className="mb-2 px-3 py-2 border border-gray-300 rounded-md"
         type="text"
         placeholder="昵称"
-        value={Username}
-        onChange={(e) => dispatch(setUsername(e.target.value))}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <input
         className="mb-2 px-3 py-2 border border-gray-300 rounded-md"
         type="email"
         placeholder="邮箱"
-        value={Email}
-        onChange={(e) => dispatch(setEmail(e.target.value))}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         className="mb-2 px-3 py-2 border border-gray-300 rounded-md"
         type="password"
         placeholder="密码"
-        value={Password}
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
       <input
         className="mb-4 px-3 py-2 border border-gray-300 rounded-md"
         type="password"
         placeholder="确认密码"
-        value={ConfirmPassword}
+        value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
       />
       <button

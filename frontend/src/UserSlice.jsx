@@ -3,9 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   access_token: "",
   token_type: "bearer",
-  UserName: "",
-  email: "bfx@example.com",
-  id: 0,
 };
 
 const UserSlice = createSlice({
