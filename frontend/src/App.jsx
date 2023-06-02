@@ -1,14 +1,12 @@
-import TodoList_body from "./components/TodoList_body";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Heading from "./components/Heading";
+import ToDoList from "./components/ToDoList";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<TodoList_body />} />
-        <Route path="/login" element={<TodoList_body />} />
-      </Routes>
-    </Router>
+    <div className="App font-Poppins container py-16 px-6 min-h-screen mx-auto">
+      <Heading />
+      <ToDoList />
+    </div>
   );
 }
 
