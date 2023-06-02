@@ -26,22 +26,66 @@ const ToDoList = () => {
   }, [todoList]);
 
   useEffect(() => {
-    const localTodoList = JSON.parse(localStorage.getItem("todoList"));
-    if (localTodoList) {
-      dispatch(setTodoList(localTodoList));
-    }
+    // const localTodoList = JSON.parse(localStorage.getItem("todoList"));
+    // if (localTodoList) {
+    //   dispatch(setTodoList(localTodoList));
+    // }
+    fetchData();
   }, []);
+
+  const fetchData = () => {
+    fetch("http://localhost:8000/todos/")
+      .then((response) => response.json())
+      .then((data) => {
+        const todoArray = data.map((item) => ({
+          task: item.content,
+          id: item.id,
+          completed: item.is_done,
+        }));
+        dispatch(setTodoList(todoArray));
+        console.log(todoArray);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const addData = (props) => {
+    fetch("http://localhost:8000/todos/", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        fetchData();
+      });
+  };
+
+  const deleteData = (id) => {
+    fetch(`http://localhost:8000/todos/${id}/`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        fetchData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleAddTodo = (task) => {
     if (task.trim().length === 0) {
       alert("please enter a task");
     } else {
-      dispatch(
-        addTodo({
-          task: task,
-          id: Date.now(),
-        })
-      );
+      addData({
+        content: task,
+        is_done: false,
+      });
+
       setNewTask("");
       setShowModal(true);
     }
@@ -55,9 +99,7 @@ const ToDoList = () => {
     }
   };
   const handleDeleteToDo = (id) => {
-    const updatedToDoList = todoList.filter((todo) => todo.id != id);
-    dispatch(setTodoList(updatedToDoList));
-    localStorage.setItem("todoList", JSON.stringify(updatedToDoList));
+    deleteData(id);
   };
 
   const handleSort = (sortCriteria) => {
