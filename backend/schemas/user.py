@@ -12,6 +12,12 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserUpdateName(BaseModel):
+    name: str
+
+class UserUpdatePassword(BaseModel):
+    password: str
+
 class UserInDB(UserBase):
     id: int
     created_at: datetime
