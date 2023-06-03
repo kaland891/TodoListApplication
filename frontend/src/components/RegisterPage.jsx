@@ -4,8 +4,6 @@ import "../index.css";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
-
   const [username, setUsername] = useState("");
 
   const [email, setEmail] = useState("");
@@ -32,7 +30,11 @@ const RegisterPage = () => {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error("Error: " + response.statusText);
+          if (response.status === 401) {
+            throw new Error("格式错误");
+          } else {
+            throw new Error("Error: " + response.statusText);
+          }
         }
       })
       .then(() => {

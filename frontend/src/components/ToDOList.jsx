@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTodoList,
-  addTodo,
   updateTodo,
   sortTodo,
   toggleCompleted,
@@ -11,26 +10,38 @@ import { TiPencil } from "react-icons/ti";
 import { BsHddNetwork, BsTrash } from "react-icons/bs";
 import empty from "../assets/empty.jpg";
 import "../index.css";
+import { useNavigate } from "react-router-dom";
 
 const ToDoList = () => {
   const dispatch = useDispatch();
   const todoList = useSelector((state) => state.todo.todoList);
   const sortCriteria = useSelector((state) => state.todo.sortCriteria);
+  const accessToken = useSelector((state) => state.auth.access_token);
   const [showModal, setShowModal] = React.useState(false);
   const [currentTodo, setCurrentTodo] = React.useState(null);
   const [newTask, setNewTask] = React.useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (todoList.length > 0)
-      localStorage.setItem("todoList", JSON.stringify(todoList));
-  }, [todoList]);
-
-  useEffect(() => {
-    fetchData();
+    if (!accessToken) {
+      alert("Please login first");
+      navigate("/login");
+    } else {
+      fetchData();
+    }
   }, []);
 
+  // useEffect(() => {
+  //   navigate("/login");
+  // }, [accessToken]);
+
   const fetchData = () => {
-    fetch("http://localhost:8000/todos/")
+    fetch("http://localhost:8000/todos/", {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const todoArray = data.map((item) => ({
@@ -51,6 +62,7 @@ const ToDoList = () => {
       method: "POST",
       headers: {
         accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(props),
@@ -64,6 +76,7 @@ const ToDoList = () => {
   const deleteData = (id) => {
     fetch(`http://localhost:8000/todos/${id}/`, {
       method: "DELETE",
+      Authorization: `Bearer ${accessToken}`,
     })
       .then(() => {
         fetchData();

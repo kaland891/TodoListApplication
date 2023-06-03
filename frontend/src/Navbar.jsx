@@ -1,6 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { setToken } from "./UserSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Navbar() {
+  const dispatch = useDispatch();
+  const accessToken = useSelector((state) => state.auth.access_token);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(setToken(""));
+    navigate("/login");
+  };
+
   return (
     <nav className="flex items-center justify-between p-6 bg-blue-500 border border-blue-500">
       <div>
@@ -25,14 +36,25 @@ function Navbar() {
       </div>
       <div>
         <ul className="flex space-x-4">
-          <li>
-            <Link
-              to="/login"
-              className="px-2 py-1 text-xl text-white  hover:border-transparent hover:text-blue-200"
-            >
-              Login
-            </Link>
-          </li>
+          {!accessToken ? (
+            <li>
+              <Link
+                to="/login"
+                className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200"
+              >
+                Login
+              </Link>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={handleLogout}
+                className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200"
+              >
+                Logout
+              </button>
+            </li>
+          )}
           <li>
             <Link
               to="/register"
