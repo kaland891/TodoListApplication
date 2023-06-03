@@ -76,7 +76,11 @@ const ToDoList = () => {
   const deleteData = (id) => {
     fetch(`http://localhost:8000/todos/${id}/`, {
       method: "DELETE",
-      Authorization: `Bearer ${accessToken}`,
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
     })
       .then(() => {
         fetchData();
