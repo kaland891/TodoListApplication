@@ -1,3 +1,4 @@
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setToken } from "../UserSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,34 +36,45 @@ function Navbar() {
         </ul>
       </div>
       <div>
-        <ul className="flex space-x-4">
-          {!accessToken ? (
+        <ul className="flex items-center space-x-4">
+          <li>
+            <Link
+              to="/register"
+              className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200 h-8"
+            >
+              Register
+            </Link>
+          </li>
+          {accessToken && (
             <li>
               <Link
-                to="/"
-                className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200"
+                to="/edit-profile"
+                className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200 h-8"
               >
-                Login
+                Edit Profile
               </Link>
             </li>
-          ) : (
+          )}
+          {accessToken && (
             <li>
               <button
                 onClick={handleLogout}
-                className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200"
+                className="px-2 py-0 text-xl text-white hover:border-transparent hover:text-blue-200 h-8"
               >
                 Logout
               </button>
             </li>
           )}
-          <li>
-            <Link
-              to="/register"
-              className="px-2 py-1 text-xl text-white  hover:border-transparent hover:text-blue-200"
-            >
-              Register
-            </Link>
-          </li>
+          {!accessToken && (
+            <li>
+              <Link
+                to="/"
+                className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200 h-8"
+              >
+                Login
+              </Link>
+            </li>
+          )}
         </ul>
       </div>
     </nav>
