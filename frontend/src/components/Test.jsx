@@ -1,14 +1,7 @@
 import React, { useEffect } from "react";
-import store from "./Store/store.jsx";
-import {
-  setTodoList,
-  addTodo,
-  updateTodo,
-  sortTodo,
-  toggleCompleted,
-} from "./ToDoSlice";
+import { setTodoList } from "../ToDoSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import "./index.css";
+import "../index.css";
 
 function Test() {
   const todoList = useSelector((state) => state.todo.todoList);

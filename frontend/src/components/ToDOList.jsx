@@ -7,10 +7,9 @@ import {
   toggleCompleted,
 } from "../ToDoSlice";
 import { TiPencil } from "react-icons/ti";
-import { BsHddNetwork, BsTrash } from "react-icons/bs";
+import { BsTrash } from "react-icons/bs";
 import empty from "../assets/empty.jpg";
 import "../index.css";
-import { useNavigate } from "react-router-dom";
 
 const ToDoList = () => {
   const dispatch = useDispatch();
@@ -20,20 +19,10 @@ const ToDoList = () => {
   const [showModal, setShowModal] = React.useState(false);
   const [currentTodo, setCurrentTodo] = React.useState(null);
   const [newTask, setNewTask] = React.useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!accessToken) {
-      alert("Please login first");
-      navigate("/login");
-    } else {
-      fetchData();
-    }
+    fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   navigate("/login");
-  // }, [accessToken]);
 
   const fetchData = () => {
     fetch("http://localhost:8000/todos/", {

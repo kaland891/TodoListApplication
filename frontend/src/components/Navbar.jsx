@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { setToken } from "./UserSlice";
+import { setToken } from "../UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function Navbar() {
@@ -9,7 +9,7 @@ function Navbar() {
 
   const handleLogout = () => {
     dispatch(setToken(""));
-    navigate("/login");
+    navigate("/");
   };
 
   return (
@@ -18,7 +18,7 @@ function Navbar() {
         <ul className="flex space-x-4">
           <li>
             <Link
-              to="/"
+              to="/todo"
               className="px-2 py-1 text-xl text-white  hover:border-transparent hover:text-blue-200"
             >
               Home
@@ -39,7 +39,7 @@ function Navbar() {
           {!accessToken ? (
             <li>
               <Link
-                to="/login"
+                to="/"
                 className="px-2 py-1 text-xl text-white hover:border-transparent hover:text-blue-200"
               >
                 Login

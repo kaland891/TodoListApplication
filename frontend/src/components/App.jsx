@@ -1,5 +1,5 @@
-import Heading from "./components/Heading";
-import ToDoList from "./components/ToDoList";
+import Heading from "./Heading";
+import ToDoList from "./ToDoList";
 
 function App() {
   return (
