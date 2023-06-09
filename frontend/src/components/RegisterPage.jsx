@@ -39,7 +39,7 @@ const RegisterPage = () => {
       .then(() => {
         alert("注册成功");
         // 跳转到登录页面
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => alert("Error: " + error));
   }

@@ -39,7 +39,6 @@ const ToDoList = () => {
           completed: item.is_done,
         }));
         dispatch(setTodoList(todoArray));
-        console.log(todoArray);
       })
       .catch((error) => {
         console.error(error);
@@ -89,7 +88,6 @@ const ToDoList = () => {
       });
 
       setNewTask("");
-      setShowModal(true);
     }
   };
   const handleUpdateTodoList = (id, task) => {
@@ -138,27 +136,24 @@ const ToDoList = () => {
                     onClick={() => {
                       setShowModal(false);
                       handleUpdateTodoList(currentTodo.id, newTask);
+                      setCurrentTodo(null);
                     }}
                   >
                     Save
                   </button>
                   <button
                     className="bg-Tangaroa rounded-md text-white py-3 px-10"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => {
+                      setShowModal(false);
+                      setNewTask("");
+                      setCurrentTodo(null);
+                    }}
                   >
                     Cancel
                   </button>
                 </>
               ) : (
                 <>
-                  <button
-                    className="bg-Tangaroa rounded-md text-white py-3 px-10"
-                    onClick={() => {
-                      setShowModal(false);
-                    }}
-                  >
-                    Cancel
-                  </button>
                   <button
                     className="bg-sunsetOrange rounded-md text-white py-3 px-10"
                     onClick={() => {
@@ -167,6 +162,14 @@ const ToDoList = () => {
                     }}
                   >
                     Add
+                  </button>
+                  <button
+                    className=" bg-Tangaroa rounded-md text-white py-3 px-10"
+                    onClick={() => {
+                      setShowModal(false);
+                    }}
+                  >
+                    Cancel
                   </button>
                 </>
               )}

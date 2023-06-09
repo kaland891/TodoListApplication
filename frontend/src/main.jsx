@@ -15,7 +15,6 @@ const App_WithAuth = withAuth(App);
 const EditProfilePage_WithAuth = withAuth(EditProfilePage);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
   <Provider store={store}>
     <Router>
       <Navbar />
@@ -28,5 +27,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       </Routes>
     </Router>
   </Provider>
-  // </React.StrictMode>
 );
