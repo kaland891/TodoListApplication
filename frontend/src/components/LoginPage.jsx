@@ -25,7 +25,7 @@ const LoginPage = () => {
           const token = await response.json(); // Wait until the Promise resolves
           dispatch(setToken(token));
           alert("登录成功");
-          navigate("/");
+          navigate("/todo");
         } else {
           if (response.status === 401) {
             throw new Error("用户名或密码错误");
