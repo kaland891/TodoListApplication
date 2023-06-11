@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTodoList,
+  addTodo,
   updateTodo,
   sortTodo,
   toggleCompleted,
@@ -9,14 +10,12 @@ import {
 import { TiPencil } from "react-icons/ti";
 import { BsTrash } from "react-icons/bs";
 import empty from "../assets/empty.jpg";
-import "../index.css";
 
 const ToDoList = () => {
   const dispatch = useDispatch();
   const todoList = useSelector((state) => state.todo.todoList);
   const sortCriteria = useSelector((state) => state.todo.sortCriteria);
-  const accessToken = useSelector((state) => state.auth.access_token);
-  const [showModal, setShowModal] = React.useState(false);
+  const [showModel, setShowModel] = React.useState(false);
   const [currentTodo, setCurrentTodo] = React.useState(null);
   const [newTask, setNewTask] = React.useState("");
 
@@ -25,12 +24,7 @@ const ToDoList = () => {
   }, []);
 
   const fetchData = () => {
-    fetch("http://localhost:8000/api/todos/", {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
+    fetch("http://localhost:8000/api/todos/")
       .then((response) => response.json())
       .then((data) => {
         const todoArray = data.map((item) => ({
@@ -39,6 +33,7 @@ const ToDoList = () => {
           completed: item.is_done,
         }));
         dispatch(setTodoList(todoArray));
+        console.log(todoArray);
       })
       .catch((error) => {
         console.error(error);
@@ -46,29 +41,41 @@ const ToDoList = () => {
   };
 
   const addData = (props) => {
-    fetch("http://localhost:8000/api//todos/", {
+    fetch("http://localhost:8000/api/todos/", {
       method: "POST",
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(props),
-    })
-      .then((response) => response.json())
-      .then(() => {
-        fetchData();
-      });
+    }).then(() => {
+      fetchData();
+    });
   };
 
   const deleteData = (id) => {
-    fetch(`http://localhost:8000/api//todos/${id}/`, {
+    fetch(`http://localhost:8000/api/todos/${id}/`, {
       method: "DELETE",
+    })
+      .then(() => {
+        fetchData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const updateData = ({ id, task, completed }) => {
+    fetch(`http://localhost:8000/api/todos/${id}/`, {
+      method: "PUT",
       headers: {
         accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        is_done: completed,
+        content: task,
+      }),
     })
       .then(() => {
         fetchData();
@@ -86,44 +93,48 @@ const ToDoList = () => {
         content: task,
         is_done: false,
       });
-
       setNewTask("");
+      setShowModel(false);
     }
-  };
-  const handleUpdateTodoList = (id, task) => {
-    if (task.trim().length === 0) {
-      alert("please enter a task");
-    } else {
-      dispatch(updateTodo({ task: task, id: id }));
-      setShowModal(false);
-    }
-  };
-  const handleDeleteToDo = (id) => {
-    deleteData(id);
   };
 
   const handleSort = (sortCriteria) => {
     dispatch(sortTodo(sortCriteria));
   };
+
   const sortTodoList = todoList.filter((todo) => {
     if (sortCriteria === "All") return true;
     if (sortCriteria === "Completed" && todo.completed) return true;
     if (sortCriteria === "Not Completed" && !todo.completed) return true;
     return false;
   });
-  const handleToggleCompleted = (id) => {
-    dispatch(toggleCompleted({ id }));
+
+  const handleDeleteToDo = (id) => {
+    deleteData(id);
   };
+
+  const handleUpdateTodoList = (id, task, completed) => {
+    if (task.length === 0) {
+      alert("please enter a task");
+    } else {
+      updateData({ id: id, task: task, completed: completed });
+    }
+  };
+
+  const handleToggleCompleted = (id, task, completed) => {
+    updateData({ id: id, task: task, completed: completed });
+  };
+
   return (
     <div>
-      {showModal && (
+      {showModel && (
         <div className="fixed w-full left-0 top-0 h-full bg-transparentBlack flex justify-center items-center">
           <div className="bg-white p-8 rounded-md">
             <input
               type="text"
               className="border p-2 rounded-md outlinw-none mb-8"
-              value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
+              value={newTask}
               placeholder={
                 currentTodo ? "Update your task here" : "Enter your task here"
               }
@@ -134,8 +145,12 @@ const ToDoList = () => {
                   <button
                     className="bg-sunsetOrange rounded-md text-white py-3 px-10"
                     onClick={() => {
-                      setShowModal(false);
-                      handleUpdateTodoList(currentTodo.id, newTask);
+                      setShowModel(false);
+                      handleUpdateTodoList(
+                        currentTodo.id,
+                        newTask,
+                        currentTodo.completed
+                      );
                       setCurrentTodo(null);
                     }}
                   >
@@ -158,16 +173,13 @@ const ToDoList = () => {
                     className="bg-sunsetOrange rounded-md text-white py-3 px-10"
                     onClick={() => {
                       handleAddTodo(newTask);
-                      setShowModal(false);
                     }}
                   >
                     Add
                   </button>
                   <button
                     className=" bg-Tangaroa rounded-md text-white py-3 px-10"
-                    onClick={() => {
-                      setShowModal(false);
-                    }}
+                    onClick={() => setShowModel(false)}
                   >
                     Cancel
                   </button>
@@ -218,7 +230,11 @@ const ToDoList = () => {
                         : "text-sunsetOrange"
                     }`}
                     onClick={() => {
-                      handleToggleCompleted(todo.id);
+                      handleToggleCompleted(
+                        todo.id,
+                        todo.task,
+                        !todo.completed
+                      );
                     }}
                   >
                     {todo.task}
@@ -227,7 +243,7 @@ const ToDoList = () => {
                     <button
                       className="bg-blue-500 text-white p-1 rounded-md ml-2"
                       onClick={() => {
-                        setShowModal(true);
+                        setShowModel(true);
                         setCurrentTodo(todo);
                         setNewTask(todo.task);
                       }}
@@ -249,7 +265,7 @@ const ToDoList = () => {
 
         <button
           className="bg-sunsetOrange text-center text-white py-3 px-10 rounded-md"
-          onClick={() => setShowModal(true)}
+          onClick={() => setShowModel(true)}
         >
           Add Task
         </button>
