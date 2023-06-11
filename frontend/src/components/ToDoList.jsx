@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setTodoList,
+  addTodo,
   updateTodo,
   sortTodo,
   toggleCompleted,
@@ -16,6 +17,34 @@ const ToDoList = () => {
   const sortCriteria = useSelector((state) => state.todo.sortCriteria);
   const [showModel, setShowModel] = React.useState(false);
   const [currentTodo, setCurrentTodo] = React.useState(null);
+  const [newTask, setNewTask] = React.useState("");
+
+  useEffect(() => {
+    if (todoList.length > 0)
+      localStorage.setItem("todoList", JSON.stringify(todoList));
+  }, [todoList]);
+
+  useEffect(() => {
+    const localTodoList = JSON.parse(localStorage.getItem("todoList"));
+    if (localTodoList) {
+      dispatch(setTodoList(localTodoList));
+    }
+  }, []);
+
+  const handleAddTodo = (task) => {
+    if (task.trim().length === 0) {
+      alert("please enter a task");
+    } else {
+      dispatch(
+        addTodo({
+          task: task,
+          id: Date.now(),
+        })
+      );
+      setNewTask("");
+      setShowModel(false);
+    }
+  };
 
   return (
     <div>
@@ -25,6 +54,8 @@ const ToDoList = () => {
             <input
               type="text"
               className="border p-2 rounded-md outlinw-none mb-8"
+              onChange={(e) => setNewTask(e.target.value)}
+              value={newTask}
               placeholder={
                 currentTodo ? "Update your task here" : "Enter your task here"
               }
@@ -44,7 +75,12 @@ const ToDoList = () => {
                 </>
               ) : (
                 <>
-                  <button className="bg-sunsetOrange rounded-md text-white py-3 px-10">
+                  <button
+                    className="bg-sunsetOrange rounded-md text-white py-3 px-10"
+                    onClick={() => {
+                      handleAddTodo(newTask);
+                    }}
+                  >
                     Add
                   </button>
                   <button
