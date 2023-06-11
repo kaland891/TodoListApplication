@@ -40,16 +40,27 @@ const ToDoList = () => {
       });
   };
 
+  const addData = (props) => {
+    fetch("http://localhost:8000/api/todos/", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(props),
+    }).then(() => {
+      fetchData();
+    });
+  };
+
   const handleAddTodo = (task) => {
     if (task.trim().length === 0) {
       alert("please enter a task");
     } else {
-      dispatch(
-        addTodo({
-          task: task,
-          id: Date.now(),
-        })
-      );
+      addData({
+        content: task,
+        is_done: false,
+      });
       setNewTask("");
       setShowModel(false);
     }
