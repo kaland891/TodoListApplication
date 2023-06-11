@@ -53,6 +53,18 @@ const ToDoList = () => {
     });
   };
 
+  const deleteData = (id) => {
+    fetch(`http://localhost:8000/api/todos/${id}/`, {
+      method: "DELETE",
+    })
+      .then(() => {
+        fetchData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleAddTodo = (task) => {
     if (task.trim().length === 0) {
       alert("please enter a task");
@@ -78,9 +90,7 @@ const ToDoList = () => {
   });
 
   const handleDeleteToDo = (id) => {
-    const updatedToDoList = todoList.filter((todo) => todo.id != id);
-    dispatch(setTodoList(updatedToDoList));
-    localStorage.setItem("todoList", JSON.stringify(updatedToDoList));
+    deleteData(id);
   };
 
   const handleUpdateTodoList = (id, task) => {
