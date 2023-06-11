@@ -24,6 +24,7 @@ const LoginPage = () => {
         if (response.ok) {
           const token = await response.json(); // Wait until the Promise resolves
           dispatch(setToken(token));
+          localStorage.setItem("access_token", JSON.stringify(token));
           alert("登录成功");
           navigate("/todo");
         } else {

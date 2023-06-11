@@ -9,6 +9,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem("access_token");
     dispatch(setToken(""));
     navigate("/");
   };

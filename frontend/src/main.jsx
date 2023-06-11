@@ -9,10 +9,12 @@ import Navbar from "./components/Navbar.jsx";
 import LoginPage from "./components/LoginPage.jsx";
 import RegisterPage from "./components/RegisterPage.jsx";
 import EditProfilePage from "./components/EditProfilePage.jsx";
+const token = localStorage.getItem("access_token");
+const initialPath = token ? "/todo" : "/";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <Router>
+    <Router initialPath={initialPath}>
       <Navbar />
       <Routes>
         <Route path="/" element={<LoginPage />} />
