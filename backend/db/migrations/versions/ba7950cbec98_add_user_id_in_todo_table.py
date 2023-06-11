@@ -10,14 +10,14 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = "ba7950cbec98"
-down_revision = "627ad3ae9268"
+revision = 'ba7950cbec98'
+down_revision = '627ad3ae9268'
 branch_labels = None
 depends_on = None
 
 
 def upgrade() -> None:
-    op.add_column("todos", sa.Column("user_id", sa.Integer))
+    op.add_column('todos', sa.Column('user_id', sa.Integer))
     op.create_foreign_key(
         "user_todo",
         "todos",

@@ -5,7 +5,7 @@ from models import User as ModelsUser
 from core.security import get_password_hash, verify_password
 
 
-class CRUDTodo(CRUDBase):
+class CRUDUser(CRUDBase):
 
     def get_by_email(self, db: Session, email: str):
         return db.query(self.model).filter(self.model.email == email).first()
@@ -28,6 +28,20 @@ class CRUDTodo(CRUDBase):
         if not verify_password(password, user.hashed_password):
             return None
         return user
+    
+    def update_name(self, db: Session, id, user_params):
+        user = self.get_by_id(db=db, id=id)
+        user.name = user_params.name    
+        db.commit()
+        db.refresh(user)
+        return user
+    
+    def update_password(self, db: Session, id, user_params):
+        user = self.get_by_id(db=db, id=id)
+        user.hashed_password = get_password_hash(user_params.password)   
+        db.commit()
+        db.refresh(user)
+        return user
 
 
-crud_user = CRUDTodo(ModelsUser)
+crud_user = CRUDUser(ModelsUser)
