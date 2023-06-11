@@ -71,6 +71,10 @@ const ToDoList = () => {
     }
   };
 
+  const handleToggleCompleted = (id) => {
+    dispatch(toggleCompleted({ id }));
+  };
+
   return (
     <div>
       {showModel && (
@@ -143,32 +147,61 @@ const ToDoList = () => {
           </div>
         ) : (
           <div className="container mx-auto mt-6">
-            {sortTodoList.map((todo) => (
-              <div
-                key={todo.id}
-                className="flex items-center justify-between mb-6 bg-Tangaroa mx-auto w-full md:w-[75%] rounded-md p-4"
+            <div className="flex justify-center mb-6">
+              <select
+                onChange={(e) => handleSort(e.target.value)}
+                className="p-1 outline-none text-sm"
               >
-                <div>{todo.task}</div>
-                <div>
-                  <button
-                    className="bg-blue-500 text-white p-1 rounded-md ml-2"
+                <option value="All" className="text-sm">
+                  All
+                </option>
+                <option value="Completed" className="text-sm">
+                  Completed
+                </option>
+                <option value="Not Completed" className="text-sm">
+                  Not Completed
+                </option>
+              </select>
+            </div>
+            <div>
+              {sortTodoList.map((todo) => (
+                <div
+                  key={todo.id}
+                  className="flex items-center justify-between mb-6 bg-Tangaroa mx-auto w-full md:w-[75%] rounded-md p-4"
+                >
+                  <div
+                    className={`${
+                      todo.completed
+                        ? "line-through text-greenTeal"
+                        : "text-sunsetOrange"
+                    }`}
                     onClick={() => {
-                      setShowModel(true);
-                      setCurrentTodo(todo);
-                      setNewTask(todo.task);
+                      handleToggleCompleted(todo.id);
                     }}
                   >
-                    <TiPencil />
-                  </button>
-                  <button
-                    className="bg-sunsetOrange text-white p-1 rounded-md ml-2"
-                    onClick={() => handleDeleteToDo(todo.id)}
-                  >
-                    <BsTrash />
-                  </button>
+                    {todo.task}
+                  </div>
+                  <div>
+                    <button
+                      className="bg-blue-500 text-white p-1 rounded-md ml-2"
+                      onClick={() => {
+                        setShowModel(true);
+                        setCurrentTodo(todo);
+                        setNewTask(todo.task);
+                      }}
+                    >
+                      <TiPencil />
+                    </button>
+                    <button
+                      className="bg-sunsetOrange text-white p-1 rounded-md ml-2"
+                      onClick={() => handleDeleteToDo(todo.id)}
+                    >
+                      <BsTrash />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
 
