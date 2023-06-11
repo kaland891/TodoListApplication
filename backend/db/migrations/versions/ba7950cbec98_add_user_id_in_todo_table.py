@@ -28,4 +28,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    pass
+    op.drop_constraint("user_todo", "todos", type_="foreignkey")
+    op.drop_column("todos", "user_id")
