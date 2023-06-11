@@ -9,9 +9,7 @@ from core import security
 from crud import crud_user
 from schemas import token as schemas_token
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl="/login/access_token"
-)
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="/api/login/access_token")
 
 
 def get_db() -> Generator:
@@ -23,8 +21,7 @@ def get_db() -> Generator:
 
 
 def get_current_user(
-    db: Session = Depends(get_db),
-    token: str = Depends(reusable_oauth2)
+    db: Session = Depends(get_db), token: str = Depends(reusable_oauth2)
 ):
     try:
         payload = jwt.decode(
@@ -34,15 +31,14 @@ def get_current_user(
     except (jwt.JWTError, ValidationError):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Could not validate credentials"
+            detail="Could not validate credentials",
         )
 
     user = crud_user.get_by_id(db, id=token_data.sub)
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
 
     return user
