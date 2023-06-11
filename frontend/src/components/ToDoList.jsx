@@ -63,6 +63,14 @@ const ToDoList = () => {
     localStorage.setItem("todoList", JSON.stringify(updatedToDoList));
   };
 
+  const handleUpdateTodoList = (id, task) => {
+    if (task.trim().length === 0) {
+      alert("please enter a task");
+    } else {
+      dispatch(updateTodo({ task: task, id: id }));
+    }
+  };
+
   return (
     <div>
       {showModel && (
@@ -80,12 +88,23 @@ const ToDoList = () => {
             <div className="flex justify-between">
               {currentTodo ? (
                 <>
-                  <button className="bg-sunsetOrange rounded-md text-white py-3 px-10">
+                  <button
+                    className="bg-sunsetOrange rounded-md text-white py-3 px-10"
+                    onClick={() => {
+                      setShowModel(false);
+                      handleUpdateTodoList(currentTodo.id, newTask);
+                      setCurrentTodo(null);
+                    }}
+                  >
                     Save
                   </button>
                   <button
                     className="bg-Tangaroa rounded-md text-white py-3 px-10"
-                    onClick={() => setShowModel(false)}
+                    onClick={() => {
+                      setShowModal(false);
+                      setNewTask("");
+                      setCurrentTodo(null);
+                    }}
                   >
                     Cancel
                   </button>
@@ -131,7 +150,14 @@ const ToDoList = () => {
               >
                 <div>{todo.task}</div>
                 <div>
-                  <button className="bg-blue-500 text-white p-1 rounded-md ml-2">
+                  <button
+                    className="bg-blue-500 text-white p-1 rounded-md ml-2"
+                    onClick={() => {
+                      setShowModel(true);
+                      setCurrentTodo(todo);
+                      setNewTask(todo.task);
+                    }}
+                  >
                     <TiPencil />
                   </button>
                   <button
