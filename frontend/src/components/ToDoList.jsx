@@ -65,6 +65,26 @@ const ToDoList = () => {
       });
   };
 
+  const updateData = ({ id, task, completed }) => {
+    fetch(`http://localhost:8000/api/todos/${id}/`, {
+      method: "PUT",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        is_done: completed,
+        content: task,
+      }),
+    })
+      .then(() => {
+        fetchData();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   const handleAddTodo = (task) => {
     if (task.trim().length === 0) {
       alert("please enter a task");
@@ -93,11 +113,11 @@ const ToDoList = () => {
     deleteData(id);
   };
 
-  const handleUpdateTodoList = (id, task) => {
-    if (task.trim().length === 0) {
+  const handleUpdateTodoList = (id, task, completed) => {
+    if (task.length === 0) {
       alert("please enter a task");
     } else {
-      dispatch(updateTodo({ task: task, id: id }));
+      updateData({ id: id, task: task, completed: completed });
     }
   };
 
@@ -126,7 +146,11 @@ const ToDoList = () => {
                     className="bg-sunsetOrange rounded-md text-white py-3 px-10"
                     onClick={() => {
                       setShowModel(false);
-                      handleUpdateTodoList(currentTodo.id, newTask);
+                      handleUpdateTodoList(
+                        currentTodo.id,
+                        newTask,
+                        currentTodo.completed
+                      );
                       setCurrentTodo(null);
                     }}
                   >
