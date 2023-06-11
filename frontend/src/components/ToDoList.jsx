@@ -18,13 +18,19 @@ const ToDoList = () => {
   const [showModel, setShowModel] = React.useState(false);
   const [currentTodo, setCurrentTodo] = React.useState(null);
   const [newTask, setNewTask] = React.useState("");
+  const accessToken = useSelector((state) => state.auth.access_token);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
-    fetch("http://localhost:8000/api/todos/")
+    fetch("http://localhost:8000/api/todos/", {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         const todoArray = data.map((item) => ({
@@ -46,6 +52,7 @@ const ToDoList = () => {
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(props),
     }).then(() => {
@@ -56,6 +63,11 @@ const ToDoList = () => {
   const deleteData = (id) => {
     fetch(`http://localhost:8000/api/todos/${id}/`, {
       method: "DELETE",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
     })
       .then(() => {
         fetchData();
@@ -71,6 +83,7 @@ const ToDoList = () => {
       headers: {
         accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify({
         is_done: completed,
@@ -159,7 +172,7 @@ const ToDoList = () => {
                   <button
                     className="bg-Tangaroa rounded-md text-white py-3 px-10"
                     onClick={() => {
-                      setShowModal(false);
+                      setShowModel(false);
                       setNewTask("");
                       setCurrentTodo(null);
                     }}
