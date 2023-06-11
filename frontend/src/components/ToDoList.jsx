@@ -57,6 +57,12 @@ const ToDoList = () => {
     return false;
   });
 
+  const handleDeleteToDo = (id) => {
+    const updatedToDoList = todoList.filter((todo) => todo.id != id);
+    dispatch(setTodoList(updatedToDoList));
+    localStorage.setItem("todoList", JSON.stringify(updatedToDoList));
+  };
+
   return (
     <div>
       {showModel && (
@@ -128,7 +134,10 @@ const ToDoList = () => {
                   <button className="bg-blue-500 text-white p-1 rounded-md ml-2">
                     <TiPencil />
                   </button>
-                  <button className="bg-sunsetOrange text-white p-1 rounded-md ml-2">
+                  <button
+                    className="bg-sunsetOrange text-white p-1 rounded-md ml-2"
+                    onClick={() => handleDeleteToDo(todo.id)}
+                  >
                     <BsTrash />
                   </button>
                 </div>
