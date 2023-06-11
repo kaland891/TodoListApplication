@@ -25,7 +25,7 @@ const ToDoList = () => {
   }, []);
 
   const fetchData = () => {
-    fetch("http://localhost:8000/todos/", {
+    fetch("http://localhost:8000/api/todos/", {
       headers: {
         accept: "application/json",
         Authorization: `Bearer ${accessToken}`,
@@ -46,7 +46,7 @@ const ToDoList = () => {
   };
 
   const addData = (props) => {
-    fetch("http://localhost:8000/todos/", {
+    fetch("http://localhost:8000/api/todos/", {
       method: "POST",
       headers: {
         accept: "application/json",
@@ -62,7 +62,7 @@ const ToDoList = () => {
   };
 
   const deleteData = (id) => {
-    fetch(`http://localhost:8000/todos/${id}/`, {
+    fetch(`http://localhost:8000/api/todos/${id}/`, {
       method: "DELETE",
       headers: {
         accept: "application/json",

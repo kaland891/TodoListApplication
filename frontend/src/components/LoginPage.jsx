@@ -11,7 +11,7 @@ const LoginPage = () => {
 
   function UserLog(e) {
     e.preventDefault();
-    fetch("http://localhost:8000/login/access_token", {
+    fetch("http://localhost:8000/api/login/access_token", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: `grant_type=&username=${encodeURIComponent(
