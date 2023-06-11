@@ -46,6 +46,17 @@ const ToDoList = () => {
     }
   };
 
+  const handleSort = (sortCriteria) => {
+    dispatch(sortTodo(sortCriteria));
+  };
+
+  const sortTodoList = todoList.filter((todo) => {
+    if (sortCriteria === "All") return true;
+    if (sortCriteria === "Completed" && todo.completed) return true;
+    if (sortCriteria === "Not Completed" && !todo.completed) return true;
+    return false;
+  });
+
   return (
     <div>
       {showModel && (
@@ -106,7 +117,24 @@ const ToDoList = () => {
             </p>
           </div>
         ) : (
-          <></> //之后会填写
+          <div className="container mx-auto mt-6">
+            {sortTodoList.map((todo) => (
+              <div
+                key={todo.id}
+                className="flex items-center justify-between mb-6 bg-Tangaroa mx-auto w-full md:w-[75%] rounded-md p-4"
+              >
+                <div>{todo.task}</div>
+                <div>
+                  <button className="bg-blue-500 text-white p-1 rounded-md ml-2">
+                    <TiPencil />
+                  </button>
+                  <button className="bg-sunsetOrange text-white p-1 rounded-md ml-2">
+                    <BsTrash />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         <button
