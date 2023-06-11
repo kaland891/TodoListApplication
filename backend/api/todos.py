@@ -4,16 +4,10 @@ router = APIRouter()
 
 
 @router.get("/")
-def read_root():
-    return {"Hello": "World"}
+def get_all_todos():
+    return {"get": "todos"}
 
 
-"""
-@router.post("/", response_model=schemas_todo.TodoInDB)
-
-
-@router.put("/{todo_id}", response_model=schemas_todo.TodoInDB)
-
-
-@router.delete("/{todo_id}", response_model=schemas_todo.TodoInDB)
-"""
+@router.post("/")
+def create_todo():
+    return {"post": "todos"}
