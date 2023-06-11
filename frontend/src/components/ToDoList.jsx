@@ -95,12 +95,27 @@ const ToDoList = () => {
           </div>
         </div>
       )}
-      <button
-        className="bg-sunsetOrange text-center text-white py-3 px-10 rounded-md"
-        onClick={() => setShowModel(true)}
-      >
-        Add Task
-      </button>
+      <div className="flex items-center justify-center flex-col">
+        {todoList.length === 0 ? (
+          <div className="mb-8">
+            <div className="sm:w-[500px] sm:h-[500px] min-w-[250px]">
+              <img src={empty} alt="" />
+            </div>
+            <p className="text-center text-Gray">
+              You have no todo's,plese add one.
+            </p>
+          </div>
+        ) : (
+          <></> //之后会填写
+        )}
+
+        <button
+          className="bg-sunsetOrange text-center text-white py-3 px-10 rounded-md"
+          onClick={() => setShowModel(true)}
+        >
+          Add Task
+        </button>
+      </div>
     </div>
   );
 };
