@@ -20,16 +20,25 @@ const ToDoList = () => {
   const [newTask, setNewTask] = React.useState("");
 
   useEffect(() => {
-    if (todoList.length > 0)
-      localStorage.setItem("todoList", JSON.stringify(todoList));
-  }, [todoList]);
-
-  useEffect(() => {
-    const localTodoList = JSON.parse(localStorage.getItem("todoList"));
-    if (localTodoList) {
-      dispatch(setTodoList(localTodoList));
-    }
+    fetchData();
   }, []);
+
+  const fetchData = () => {
+    fetch("http://localhost:8000/api/todos/")
+      .then((response) => response.json())
+      .then((data) => {
+        const todoArray = data.map((item) => ({
+          task: item.content,
+          id: item.id,
+          completed: item.is_done,
+        }));
+        dispatch(setTodoList(todoArray));
+        console.log(todoArray);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const handleAddTodo = (task) => {
     if (task.trim().length === 0) {
