@@ -121,8 +121,8 @@ const ToDoList = () => {
     }
   };
 
-  const handleToggleCompleted = (id) => {
-    dispatch(toggleCompleted({ id }));
+  const handleToggleCompleted = (id, task, completed) => {
+    updateData({ id: id, task: task, completed: completed });
   };
 
   return (
@@ -230,7 +230,11 @@ const ToDoList = () => {
                         : "text-sunsetOrange"
                     }`}
                     onClick={() => {
-                      handleToggleCompleted(todo.id);
+                      handleToggleCompleted(
+                        todo.id,
+                        todo.task,
+                        !todo.completed
+                      );
                     }}
                   >
                     {todo.task}
