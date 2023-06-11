@@ -114,7 +114,7 @@ const ToDoList = () => {
                   <button
                     className="bg-Tangaroa rounded-md text-white py-3 px-10"
                     onClick={() => {
-                      setShowModal(false);
+                      setShowModel(false);
                       setNewTask("");
                       setCurrentTodo(null);
                     }}
