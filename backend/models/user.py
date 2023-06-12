@@ -1,8 +1,10 @@
 from datetime import datetime
 from sqlalchemy import TIMESTAMP, Column, Integer, String
+from sqlalchemy.orm import relationship
+from db.config import Base
 
 
-class User:
+class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -18,3 +20,4 @@ class User:
         onupdate=datetime.utcnow,
         default=datetime.utcnow,
     )
+    todos = relationship("Todo", uselist=True, back_populates="user")
