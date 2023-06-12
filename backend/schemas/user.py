@@ -1,3 +1,4 @@
+
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
 
@@ -14,10 +15,8 @@ class UserCreate(UserBase):
 class UserUpdateName(BaseModel):
     name: str
 
-
 class UserUpdatePassword(BaseModel):
     password: str
-
 
 class UserInDB(UserBase):
     id: int
