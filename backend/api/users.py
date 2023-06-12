@@ -1,41 +1,19 @@
 from fastapi import APIRouter
+from schemas import user as schemas_user
 
 router = APIRouter()
 
-RECIPES = [
-    {
-        "id": 1,
-        "title": "Apple Pie",
-        "ingredients": ["apple", "pie"],
-        "instructions": "Boil apples",
-    },
-    {
-        "id": 2,
-        "title": "Apple Pie",
-        "ingredients": ["apple", "salad"],
-        "instructions": "Raw apples",
-    },
-]
 
-
-@router.post("/")
-def create_user():
+@router.post("/", response_model=schemas_user.UserInDB)
+def create_user(user_params: schemas_user.UserCreate):
     return {"post": "users"}
 
 
-@router.get("/test/{id}", status_code=200)
-def update_user(*, id: int) -> dict:
-    # print(type(id))  # ADDED
-    result = [recipe for recipe in RECIPES if recipe["id"] == id]
-    if result:
-        return result[0]
-
-
-@router.put("/name")
-def update_user():
+@router.put("/name", response_model=schemas_user.UserInDB)
+def update_user(user_params: schemas_user.UserUpdateName):
     return {"name": "tom"}
 
 
-@router.put("/password")
-def update_user():
+@router.put("/password", response_model=schemas_user.UserInDB)
+def update_user(user_params: schemas_user.UserUpdatePassword):
     return {"password": 123}
