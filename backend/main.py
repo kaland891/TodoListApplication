@@ -1,10 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
 from api.api import api_router
-from typing import Optional
+from typing import Optional, Any
 
 from recipe_schemas import RecipeSearchResults, Recipe, RecipeCreate
 from recipe_data import RECIPES
+
+
+from fastapi import Query, HTTPException
 
 app = FastAPI()
 app.include_router(api_router, prefix="/api")
@@ -16,11 +19,13 @@ async def root():
 
 
 @app.get("/test/{id}", status_code=200, response_model=Recipe)
-def api_match(*, id: int) -> dict:
+def api_match(*, id: int) -> Any:
     # print(type(id))  # added
     result = [recipe for recipe in RECIPES if recipe["id"] == id]
-    if result:
-        return result[0]
+    if not result:
+        raise HTTPException(status_code=404, detail=f"Recipe with ID {id} not found")
+
+    return result[0]
 
 
 @app.get("/search/", status_code=200, response_model=RecipeSearchResults)
