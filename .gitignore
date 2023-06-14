@@ -3,3 +3,4 @@
 .vscode/
 *.pyx
 _pycache_
+node_modules
