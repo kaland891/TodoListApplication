@@ -1,8 +1,10 @@
 from datetime import datetime
 from sqlalchemy import TIMESTAMP, Boolean, Column, Integer, Text, ForeignKey
+from sqlalchemy.orm import relationship
+from db.config import Base
 
 
-class Todo:
+class Todo(Base):
     __tablename__ = "todos"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -18,3 +20,4 @@ class Todo:
         onupdate=datetime.utcnow,
         default=datetime.utcnow,
     )
+    user = relationship("User", back_populates="todos")

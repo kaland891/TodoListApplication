@@ -1,6 +1,6 @@
 *.log
 */.vscode/
 .vscode/
-*.pyx
+*.pyc
 _pycache_
 node_modules

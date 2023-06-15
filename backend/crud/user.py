@@ -2,6 +2,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from crud.base import CRUDBase
 from models import User as ModelsUser
+from core.security import get_password_hash, verify_password
 
 
 class CRUDUser(CRUDBase):
