@@ -6,8 +6,10 @@ class TodoBase(BaseModel):
     is_done: bool
     content: str
 
+
 class TodoCreate(TodoBase):
     pass
+
 
 class Todo(TodoBase):
     id: int
