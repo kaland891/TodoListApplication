@@ -1,4 +1,4 @@
-from fastapi.encoders import jsonable_encoder
+"""from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from crud.base import CRUDBase
 from models import User as ModelsUser
@@ -42,4 +42,4 @@ class CRUDUser(CRUDBase):
         return user
 
 
-crud_user = CRUDUser(ModelsUser)
+crud_user = CRUDUser(ModelsUser)"""
